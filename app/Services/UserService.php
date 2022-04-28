@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Interfaces\CrudInterface;
 use App\Models\User;
 
 class UserService extends BaseService implements CrudInterface
 {
-
     public function __construct(private User $user)
     {
-
     }
 
     public function getAll()
@@ -18,22 +18,22 @@ class UserService extends BaseService implements CrudInterface
         return $this->user->paginate(self::PAGINATE_COUNT);
     }
 
-    public function getOne()
+    public function getOne($id)
     {
-        // TODO: Implement getOne() method.
+        return $this->user->findOrFail($id);
     }
 
-    public function create()
+    public function create(UserCreateRequest $request)
     {
         // TODO: Implement create() method.
     }
 
-    public function update()
+    public function update(UserUpdateRequest $request)
     {
         // TODO: Implement update() method.
     }
 
-    public function delete()
+    public function delete($id)
     {
         // TODO: Implement delete() method.
     }

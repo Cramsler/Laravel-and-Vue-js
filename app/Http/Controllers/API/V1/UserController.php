@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function __construct(private UserService $service, private UserResource $resource)
+    public function __construct(private UserService $service)
     {
-
     }
 
     /**
@@ -22,9 +22,11 @@ class UserController extends Controller
     public function index()
     {
         try {
-           return $this->resource::collection($this->service->getAll());
+           return UserResource::collection($this->service->getAll());
         } catch (\Exception $e) {
-           return $e->getMessage();
+            $massage = ['errors' => $e->getMessage()];
+
+            return response(json_encode($massage), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -39,36 +41,20 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return UserResource|string
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
-    }
+        try {
+            return new UserResource($this->service->getOne($id));
+        } catch (\Exception $e) {
+            $massage = ['errors' => $e->getMessage()];
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+            return response(json_encode($massage), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
