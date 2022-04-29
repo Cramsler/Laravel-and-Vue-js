@@ -2,15 +2,18 @@
 
 namespace App\Interfaces;
 
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
+
 interface CrudInterface
 {
     public function getAll();
 
-    public function getOne();
+    public function getOne($id);
 
-    public function create();
+    public function create(UserCreateRequest $request);
 
-    public function update();
+    public function update(UserUpdateRequest $request);
 
-    public function delete();
+    public function delete($id);
 }
