@@ -9,18 +9,14 @@ use App\Models\User;
 
 class UserService extends BaseService implements CrudInterface
 {
-    public function __construct(private User $user)
-    {
-    }
-
     public function getAll()
     {
-        return $this->user->paginate(self::PAGINATE_COUNT);
+        return User::paginate(self::PAGINATE_COUNT);
     }
 
     public function getOne($id)
     {
-        return $this->user->findOrFail($id);
+        return User::findOrFail($id);
     }
 
     public function create(UserCreateRequest $request)
