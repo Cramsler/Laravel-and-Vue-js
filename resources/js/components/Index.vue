@@ -30,7 +30,7 @@ export default {
         messages: []
     }),
    async mounted() {
-        this.connection = new WebSocket('ws://localhost:3000')
+        this.connection = new WebSocket('ws://charter-chat.herokuapp.com:3000')
 
         this.connection.onmessage = (event) => {
             this.messages.push( {msg: event.data, my: false})
