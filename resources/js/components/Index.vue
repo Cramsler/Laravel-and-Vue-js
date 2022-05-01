@@ -1,115 +1,84 @@
 <template>
-    <v-app style="z-index: 0">
-        <v-app-bar color="grey-lighten-2"></v-app-bar>
-        <v-main class="chat">
-            <v-container fluid class="messages-table">
-                <ul v-if="messages.length !== 0"
-                     v-for="message in messages" :key="message"
-                     class="message-container"
-                    :class="{'my-message': message.my}">
-                    <li class="rounded-xl elevation-7 message-bubble" :class="[message.my ? 'rounded-br-0 my-message' : 'rounded-bl-0']">
-                        {{message.msg}}
-                    </li>
-                </ul>
-            </v-container>
+    <v-app class="app">
+        <Sidebar :users="users" />
+        <Header />
+        <MessagesField :messages="messages" />
 
-            <v-card class="input-bar">
-                <v-spacer />
-                <textarea ref="messageInput" class="message-input" v-model="message"></textarea>
-                <v-btn
-                    class="ma-2"
-                    color="indigo"
-                    icon="mdi-send"
-                    @click="sendMessage(message)"
-                ></v-btn>
-                <v-spacer />
-            </v-card>
-        </v-main>
+        <InputGroup :connection="connection"
+                    @send-message="sendMessage"
+                    @scroll-down="scrollDown"/>
     </v-app>
 </template>
 
 <script>
+
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import MessagesField from "./Messages-field";
+import InputGroup from "./Input-group";
+
 export default {
+    components: {
+        Sidebar,
+        Header,
+        MessagesField,
+        InputGroup
+    },
     data: () => ({
-        messages: [],
-        message: '',
-        connection: {}
+        connection: {},
+        users: [],
+        messages: []
     }),
-    mounted() {
-        console.log("Starting connection to WebSocket Server")
+   async mounted() {
         this.connection = new WebSocket('ws://localhost:3000')
 
         this.connection.onmessage = (event) => {
             this.messages.push( {msg: event.data, my: false})
-            console.log(event);
+            this.scrollDown();
         }
 
         this.connection.onopen = function(event) {
-            console.log(event)
             console.log("Successfully connected to the echo websocket server...")
         }
 
-    },
-    computed: {
-
+        const data = await axios.get('API/V1/users');
+        this.users = data.data.data
     },
     methods: {
-        sendMessage(message) {
-            message = message.trim();
-            if (message.length !== 0) {
-                this.connection.send(message);
-                this.messages.push({msg: message, my: true})
-                this.message = '';
-                this.$refs.messageInput.value = '';
-            }
+        scrollDown() {
+            const div = document.querySelector('.chat-messages__field')
+            div.scrollTop = div.scrollHeight;
+        },
+
+        sendMessage (message) {
+            this.messages.push({msg: message, my: true})
         }
     }
 }
 </script>
 
 <style scoped>
-.input-bar {
-    display: flex;
-    width: 100%;
-    padding: 20px;
-    position: absolute;
-    bottom: 0;
-    background-color: rgba(83, 104, 119, 0.98);
-    align-items: center;
-}
-
-.message-input{
-    width: 50%;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    border: solid grey 1px;
-    color: white;
-    margin-right: 10px;
-}
-
-.message-bubble {
-    max-width: 40%;
-    display: inline-block;
-    vertical-align: top;
-    padding: 20px;
-    color: white;
-    margin-bottom: 30px;
-    background-color: rgba(83, 104, 119, 0.98);
-}
-.chat {
-    background-image: url('https://blog.1a23.com/wp-content/uploads/sites/2/2020/02/Desktop.png');
+.app {
+    font-family: "Colibri", sans-serif;
+    font-weight: 700;
+    background-image: url("https://images.pexels.com/photos/3473569/pexels-photo-3473569.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
-.messages-table {
-    width: 40%;
+.app div::-webkit-scrollbar {
+    width: 5px;
+    background: none;
 }
 
-.my-message {
-    display: flex;
-    justify-content: flex-end;
+.app div::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(162, 172, 180, 0.25);
+}
+
+.app div::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: none;
 }
 </style>
