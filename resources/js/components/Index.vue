@@ -1,7 +1,7 @@
 <template>
     <v-app class="app">
-        <Sidebar :users="users" />
         <Header />
+        <Sidebar :users="users" />
         <MessagesField :messages="messages" />
 
         <InputGroup :connection="connection"
@@ -30,7 +30,7 @@ export default {
         messages: []
     }),
    async mounted() {
-        this.connection = new WebSocket('wss://charter-chat.herokuapp.com:3000')
+        this.connection = new WebSocket('ws://localhost:3000')
 
         this.connection.onmessage = (event) => {
             this.messages.push( {msg: event.data, my: false})
@@ -81,4 +81,11 @@ export default {
     border-radius: 10px;
     background: none;
 }
+
+@media(max-width: 450px) {
+    .app {
+        background-image: url("https://i.redd.it/ts7vuoswhwf41.jpg");
+    }
+}
+
 </style>

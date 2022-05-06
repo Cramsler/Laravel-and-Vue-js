@@ -74,4 +74,13 @@ export default {
     display: flex;
     align-items:flex-end;
 }
+
+@media(max-width: 450px) {
+    .chat-messages__field {
+        width: 100%;
+        right: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
 </style>

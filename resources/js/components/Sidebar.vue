@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer permanent class="test" position="left" style="background-color: #212122; color: #a2acb4; width: 25%; overflow-y: hidden">
+    <v-navigation-drawer permanent class="test" position="left" style="background-color: #212122; color: #a2acb4;  overflow-y: hidden; @media(min-width: 450px) {width: 25%;}">
         <div  class="sidebar scroll-bar">
             <div v-for="user in users" :key="user.id" class="user-item">
                 <v-avatar color="info" style="margin-right: 10px;">
@@ -69,5 +69,11 @@ export default {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
     border-radius: 10px;
     background: none;
+}
+
+@media (max-width: 450px) {
+    .user-item {
+        width: max-content;
+    }
 }
 </style>

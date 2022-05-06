@@ -80,4 +80,10 @@ export default {
     color: #a2acb4;
     box-shadow: 0 0 10px;
 }
+
+@media(max-width: 450px) {
+    .type-message__input {
+        width: 100%;
+    }
+}
 </style>
