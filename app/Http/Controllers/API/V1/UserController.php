@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\CrudInterface;
-use App\Services\UserService;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -34,18 +34,23 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function create()
+    public function create(UserCreateRequest $request)
     {
-        //
+        try {
+            return UserResource::collection($this->service->create($request));
+        } catch (\Exception $e) {
+            $massage = ['errors' => $e->getMessage()];
+
+            return response(json_encode($massage), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return UserResource|string
+     *
      */
     public function show(int $id)
     {
@@ -61,23 +66,32 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, int $id)
     {
-        //
+        try {
+            return new UserResource($this->service->update($request, $id));
+        } catch (\Exception $e) {
+            $massage = ['errors' => $e->getMessage()];
+
+            return response(json_encode($massage), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        try {
+            return $this->service->delete($id);
+        } catch (\Exception $e) {
+            $massage = ['errors' => $e->getMessage()];
+
+            return response(json_encode($massage), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

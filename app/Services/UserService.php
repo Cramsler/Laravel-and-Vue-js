@@ -21,16 +21,18 @@ class UserService extends BaseService implements CrudInterface
 
     public function create(UserCreateRequest $request)
     {
-        // TODO: Implement create() method.
+        return User::create($request->post());
     }
 
-    public function update(UserUpdateRequest $request)
+    public function update(UserUpdateRequest $request, $id)
     {
-        // TODO: Implement update() method.
+        $user = $this->getOne($id);
+
+        return $user->update($request->post());
     }
 
     public function delete($id)
     {
-        // TODO: Implement delete() method.
+        return User::destroy($id);
     }
 }

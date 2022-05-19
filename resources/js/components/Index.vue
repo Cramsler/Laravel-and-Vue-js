@@ -37,7 +37,7 @@ export default {
             this.scrollDown();
         }
 
-        this.connection.onopen = function(event) {
+        this.connection.onopen = (event) => {
             console.log("Successfully connected to the echo websocket server...")
         }
 

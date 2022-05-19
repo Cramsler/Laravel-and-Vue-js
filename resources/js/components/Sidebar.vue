@@ -1,5 +1,13 @@
 <template>
-    <v-navigation-drawer permanent class="test" position="left" style="background-color: #212122; color: #a2acb4;  overflow-y: hidden; @media(min-width: 450px) {width: 25%;}">
+    <v-navigation-drawer
+        permanent
+        class="test"
+        position="left"
+        style="background-color: #212122;
+        color: #a2acb4;
+          overflow-y: hidden;
+           @media(min-width: 450px) {width: 25%;}"
+    >
         <div  class="sidebar scroll-bar">
             <div v-for="user in users" :key="user.id" class="user-item">
                 <v-avatar color="info" style="margin-right: 10px;">

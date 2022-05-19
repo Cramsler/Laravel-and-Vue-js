@@ -13,7 +13,7 @@ interface CrudInterface
 
     public function create(UserCreateRequest $request);
 
-    public function update(UserUpdateRequest $request);
+    public function update(UserUpdateRequest $request, $id);
 
     public function delete($id);
 }
