@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserCreateRequest;
-use App\Http\Requests\UserUpdateRequest;
-use App\Http\Resources\UserResource;
-use App\Interfaces\UserCrudInterface;
+use App\Http\Requests\ChatCreateRequest;
+use App\Http\Requests\ChatUpdateRequest;
+use App\Http\Resources\ChatResource;
+use App\Interfaces\ChatCrudInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends Controller
+class ChatController extends Controller
 {
-    public function __construct(private UserCrudInterface $service)
+    public function __construct(private ChatCrudInterface $service)
     {
     }
 
@@ -23,7 +23,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-           return UserResource::collection($this->service->getAll());
+            return ChatResource::collection($this->service->getAll());
         } catch (\Exception $e) {
             $massage = ['errors' => $e->getMessage()];
 
@@ -36,10 +36,10 @@ class UserController extends Controller
      *
      *
      */
-    public function create(UserCreateRequest $request)
+    public function create(ChatCreateRequest $request)
     {
         try {
-            return UserResource::collection($this->service->create($request));
+            return ChatResource::collection($this->service->create($request));
         } catch (\Exception $e) {
             $massage = ['errors' => $e->getMessage()];
 
@@ -55,7 +55,7 @@ class UserController extends Controller
     public function show(int $id)
     {
         try {
-            return new UserResource($this->service->getOne($id));
+            return new ChatResource($this->service->getOne($id));
         } catch (\Exception $e) {
             $massage = ['errors' => $e->getMessage()];
 
@@ -68,10 +68,10 @@ class UserController extends Controller
      *
      *
      */
-    public function update(UserUpdateRequest $request, int $id)
+    public function update(ChatUpdateRequest $request, int $id)
     {
         try {
-            return new UserResource($this->service->update($request, $id));
+            return new ChatResource($this->service->update($request, $id));
         } catch (\Exception $e) {
             $massage = ['errors' => $e->getMessage()];
 
