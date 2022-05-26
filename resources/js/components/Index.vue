@@ -1,9 +1,8 @@
 <template>
     <v-app class="app">
         <Header />
-        <Sidebar :users="users" />
+        <Sidebar :chats="chats" />
         <MessagesField :messages="messages" />
-
         <InputGroup :connection="connection"
                     @send-message="sendMessage"
                     @scroll-down="scrollDown"/>
@@ -26,7 +25,7 @@ export default {
     },
     data: () => ({
         connection: {},
-        users: [],
+        chats: [],
         messages: []
     }),
    async mounted() {
@@ -41,8 +40,8 @@ export default {
             console.log("Successfully connected to the echo websocket server...")
         }
 
-        const data = await axios.get('API/V1/users');
-        this.users = data.data.data
+        const data = await axios.get('API/V1/chats');
+        this.chats = data.data.data
     },
     methods: {
         scrollDown() {

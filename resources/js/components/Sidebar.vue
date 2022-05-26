@@ -9,14 +9,15 @@
            @media(min-width: 450px) {width: 25%;}"
     >
         <div  class="sidebar scroll-bar">
-            <div v-for="user in users" :key="user.id" class="user-item">
-                <v-avatar color="info" style="margin-right: 10px;">
-                    <v-icon icon="mdi-account-circle"></v-icon>
-                </v-avatar>
-                <div>
-                    <v-list-item-title>{{user.name}}</v-list-item-title>
-                    <span style="font-size: 12px">{{user.email}}</span>
-                </div>
+            <div v-for="chat in chats" :key="chat.id">
+                <router-link :to="{ name: 'chat', params: { id: chat.id }}" class="user-item">
+                    <v-avatar color="info" style="margin-right: 10px;">
+                        <v-icon icon="mdi-account-circle"></v-icon>
+                    </v-avatar>
+                    <div>
+                        <v-list-item-title>{{chat.name}}</v-list-item-title>
+                    </div>
+                </router-link>
             </div>
         </div>
     </v-navigation-drawer>
@@ -26,7 +27,7 @@
 export default {
     name: "Sidebar",
     props: {
-        users: {
+        chats: {
             type: Array,
             default: []
         }
@@ -40,6 +41,8 @@ export default {
 
 <style scoped>
 .user-item {
+    color: white;
+    text-decoration: none;
     display: flex;
     align-items: center;
     flex-direction: row;

@@ -5,6 +5,7 @@
              class="message-container"
              :class="{'my-message': message.my}"
         >
+            <router-view></router-view>
             <v-avatar v-if="!message.my" color="info" style="margin-right: 10px;">
                 <v-icon icon="mdi-account-circle"></v-icon>
             </v-avatar>

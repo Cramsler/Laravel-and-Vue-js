@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\ChatController;
 use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('users', UserController::class);
+Route::resource('chats', ChatController::class);
