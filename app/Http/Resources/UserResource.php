@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Database\Seeders\ChatUserSeeder;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -20,7 +21,7 @@ class UserResource extends JsonResource
             'email'    => $this->email,
             'phone'    => $this->phone,
             'birthday' => $this->birthday,
-            'chats'    => $this->chats
+            'chats'    => ChatResource::collection($this->chats)
         ];
     }
 }

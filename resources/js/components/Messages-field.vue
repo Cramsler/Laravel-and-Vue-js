@@ -1,28 +1,90 @@
 <template>
-    <div class="chat-messages__field" ref="messagesField">
+    <Header :title="chat.name"/>
+    <v-progress-linear indeterminate color="green" v-if="!created" style="margin-top: 65px;" />
+    <div class="chat-messages__field" v-if="created">
         <div v-if="messages.length !== 0"
-             v-for="message in messages" :key="message"
+             v-for="message in messages" :key="message.id"
              class="message-container"
-             :class="{'my-message': message.my}"
+             :class="{'my-message': message.user_id === user}"
         >
-            <router-view></router-view>
-            <v-avatar v-if="!message.my" color="info" style="margin-right: 10px;">
+            <v-avatar v-if="message.user_id !== user" color="info" style="margin-right: 10px;">
                 <v-icon icon="mdi-account-circle"></v-icon>
             </v-avatar>
-            <div class="rounded-xl elevation-7 message-bubble" :class="[message.my ? 'rounded-br-0 my-message' : 'rounded-bl-0']">
-                {{message.msg}}
+            <div class="rounded-xl elevation-7 message-bubble" :class="[message.user_id === user ? 'rounded-br-0 my-message' : 'rounded-bl-0']">
+                {{message.text}}
             </div>
         </div>
     </div>
+    <InputGroup :connection="connection"
+                @send-message="sendMessage"
+                @scroll-down="scrollDown"/>
 </template>
 
 <script>
+import Header from "./Header";
+import InputGroup from "./Input-group";
+
 export default {
     name: "Messages-field",
+    components: {
+        Header,
+        InputGroup
+    },
     props: {
-        messages: {
-            type: Array,
-            default: []
+        connection: {
+            type: Object,
+            default: {}
+        }
+    },
+    data: () => ({
+        user: 1,
+        created: false,
+        chat: {
+            type: Object,
+            default: {}
+        },
+        messages: []
+    }),
+    async created () {
+        await this.fetchChat();
+        this.messages = this.chat.messages
+    },
+    mounted () {
+        this.connection.onmessage = (event) => {
+            this.messages.push({
+                text: event.data,
+                user_id: this.user,
+                chat_id: this.chat.id
+            })
+            this.scrollDown();
+        }
+    },
+    watch: {
+        '$route.params.id': {
+            handler() {
+                this.fetchChat()
+            }
+        }
+    },
+    methods: {
+        async fetchChat() {
+            const data = await axios.get(`API/V1/chats/${this.$route.params.id}`);
+            this.chat = data.data.data;
+            this.created = true;
+        },
+
+        scrollDown() {
+            const div = document.querySelector('.chat-messages__field')
+            div.scrollTop = div.scrollHeight;
+        },
+
+        sendMessage (message) {
+            console.log(message)
+            this.messages.push({
+                    text: message,
+                    user_id: this.user,
+                    chat_id: this.chat.id
+                })
         }
     }
 }
@@ -30,13 +92,11 @@ export default {
 
 <style scoped>
 .chat-messages__field {
-    width: 33.5%;
+    width: 100%;
     height: 100%;
     position: absolute;
-    right: 33.5%;
     overflow-y: scroll;
-    padding-bottom: 200px;
-    padding-top: 70px;
+    padding: 70px 33% 200px 33%;
 }
 
 .chat-messages__field::-webkit-scrollbar {

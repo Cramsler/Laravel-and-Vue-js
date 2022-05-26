@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Chat::class);
     }
 
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
     public function getFullNameAttribute ()
     {
         return sprintf('%s %s', $this->first_name, $this->last_name);

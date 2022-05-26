@@ -36,7 +36,6 @@ export default {
                 this.$emit('scroll-down')
                 this.$emit('send-message', message)
                 this.message = '';
-                this.scrollDown();
             }
         },
 

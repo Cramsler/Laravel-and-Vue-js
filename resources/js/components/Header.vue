@@ -5,7 +5,7 @@
                 <v-icon icon="mdi-account-circle"></v-icon>
             </v-avatar>
         </template>
-        <v-app-bar-title>Иванов Иван</v-app-bar-title>
+        <v-app-bar-title>{{title}}</v-app-bar-title>
         <v-spacer></v-spacer>
         <v-btn icon>
             <v-icon>mdi-magnify</v-icon>
@@ -18,7 +18,13 @@
 
 <script>
 export default {
-    name: "Header"
+    name: "Header",
+    props: {
+        title: {
+            type: String,
+            default: ''
+        }
+    }
 }
 </script>
 

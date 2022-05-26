@@ -1,11 +1,11 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Chat from "./components/Chat";
+import MessagesField from "./components/Messages-field";
 
 const routes = [
     {
         path: '/:id',
         name: 'chat',
-        component: Chat
+        component: MessagesField
     }
 ];
 
