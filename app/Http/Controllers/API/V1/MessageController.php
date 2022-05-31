@@ -36,10 +36,10 @@ class MessageController extends Controller
      *
      *
      */
-    public function create(MessageCreateRequest $request)
+    public function store(MessageCreateRequest $request)
     {
         try {
-            return MessageResource::collection($this->service->create($request));
+            return $this->service->create($request);
         } catch (\Exception $e) {
             $massage = ['errors' => $e->getMessage()];
 

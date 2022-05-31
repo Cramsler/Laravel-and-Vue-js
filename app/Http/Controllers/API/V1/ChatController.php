@@ -36,7 +36,7 @@ class ChatController extends Controller
      *
      *
      */
-    public function create(ChatCreateRequest $request)
+    public function store(ChatCreateRequest $request)
     {
         try {
             return ChatResource::collection($this->service->create($request));

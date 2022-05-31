@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Interfaces\ChatCrudInterface;
+use App\Interfaces\MessageCrudInterface;
 use App\Interfaces\UserCrudInterface;
 use App\Services\ChatService;
+use App\Services\MessageService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ChatCrudInterface::class, function ($app) {
             return new ChatService();
+        });
+
+        $this->app->bind(MessageCrudInterface::class, function ($app) {
+            return new MessageService();
         });
     }
 

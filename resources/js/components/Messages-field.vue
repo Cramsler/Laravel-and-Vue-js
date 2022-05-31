@@ -45,24 +45,18 @@ export default {
         },
         messages: []
     }),
-    async created () {
+    async mounted () {
         await this.fetchChat();
-        this.messages = this.chat.messages
-    },
-    mounted () {
+
         this.connection.onmessage = (event) => {
-            this.messages.push({
-                text: event.data,
-                user_id: this.user,
-                chat_id: this.chat.id
-            })
-            this.scrollDown();
+            this.sendMessage(event.data)
         }
     },
     watch: {
         '$route.params.id': {
-            handler() {
-                this.fetchChat()
+            immediate: true,
+            async handler() {
+                await this.fetchChat()
             }
         }
     },
@@ -70,6 +64,7 @@ export default {
         async fetchChat() {
             const data = await axios.get(`API/V1/chats/${this.$route.params.id}`);
             this.chat = data.data.data;
+            this.messages = this.chat.messages
             this.created = true;
         },
 
@@ -78,13 +73,16 @@ export default {
             div.scrollTop = div.scrollHeight;
         },
 
-        sendMessage (message) {
-            console.log(message)
-            this.messages.push({
-                    text: message,
-                    user_id: this.user,
-                    chat_id: this.chat.id
-                })
+       async sendMessage (message) {
+            const messageItem = {
+                text: message,
+                user_id: this.user,
+                chat_id: this.chat.id
+            }
+
+           await axios.post(`API/V1/messages`, messageItem);
+
+           this.messages.push(messageItem)
         }
     }
 }

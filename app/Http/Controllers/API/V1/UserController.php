@@ -36,7 +36,7 @@ class UserController extends Controller
      *
      *
      */
-    public function create(UserCreateRequest $request)
+    public function store(UserCreateRequest $request)
     {
         try {
             return UserResource::collection($this->service->create($request));
