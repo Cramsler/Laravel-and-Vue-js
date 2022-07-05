@@ -19,7 +19,7 @@ class ChatResource extends JsonResource
             'name'        => $this->name,
             'description' => $this->description,
             'users'       => $this->users,
-            'messages'    => $this->messages
+            'messages'    => MessageResource::collection($this->messages)
         ];
     }
 }

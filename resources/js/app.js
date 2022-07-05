@@ -25,6 +25,7 @@ const vuetify = new createVuetify({
 
 app.component('base-app', Index)
 
+app.config.globalProperties.$user = document.querySelector("meta[name='user_id']").getAttribute('content');
 app.use(router);
 app.use(vuetify);
 app.mount('#app');

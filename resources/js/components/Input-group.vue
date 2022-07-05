@@ -32,7 +32,10 @@ export default {
         sendMessage(message) {
             message = message.trim();
             if (message.length !== 0) {
-                this.connection.send(message);
+                this.connection.send(JSON.stringify({
+                    'message': message,
+                    'user': this.$user
+                }));
                 this.$emit('scroll-down')
                 this.$emit('send-message', message)
                 this.message = '';

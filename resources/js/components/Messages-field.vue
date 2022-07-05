@@ -37,7 +37,7 @@ export default {
         }
     },
     data: () => ({
-        user: 1,
+        user: null,
         created: false,
         chat: {
             type: Object,
@@ -46,10 +46,12 @@ export default {
         messages: []
     }),
     async mounted () {
+        this.user = Number(this.$user);
         await this.fetchChat();
+        this.scrollDown();
 
         this.connection.onmessage = (event) => {
-            this.sendMessage(event.data)
+            this.onMessage(JSON.parse(event.data))
         }
     },
     watch: {
@@ -64,7 +66,7 @@ export default {
         async fetchChat() {
             const data = await axios.get(`API/V1/chats/${this.$route.params.id}`);
             this.chat = data.data.data;
-            this.messages = this.chat.messages
+            this.createMessagesArray(this.chat.messages)
             this.created = true;
         },
 
@@ -83,7 +85,33 @@ export default {
            await axios.post(`API/V1/messages`, messageItem);
 
            this.messages.push(messageItem)
-        }
+        },
+
+       onMessage(message) {
+           const messageItem = {
+               text: message.message,
+               user_id: message.user,
+           }
+           this.messages.push(messageItem);
+
+           this.scrollDown();
+       },
+
+       createMessagesArray(messages)
+       {
+           let newMessages = [];
+
+           messages.forEach((message) => {
+               const messageItem = {
+                   text: message.text,
+                   user_id: message.user_id,
+               }
+
+               newMessages.push(messageItem)
+           })
+
+           this.messages = newMessages;
+       }
     }
 }
 </script>
@@ -124,7 +152,7 @@ export default {
     vertical-align: top;
     padding: 20px;
     color:  #a2acb4;
-    margin-top: 30px;
+    margin-top: 10px;
     background-color: #212122;
     word-wrap: break-word;
 }

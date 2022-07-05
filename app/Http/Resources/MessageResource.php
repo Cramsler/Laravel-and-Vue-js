@@ -16,10 +16,10 @@ class MessageResource extends JsonResource
     {
         return [
             'id'         => $this->id,
-            'user'       => (new UserResource($this->user)),
-            'chat'       => (new ChatResource($this->chat)),
+            'text'       => $this->text,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'user_id'    => $this->user_id,
         ];
     }
 }

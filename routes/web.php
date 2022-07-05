@@ -19,6 +19,9 @@ Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'autho
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'registerView'])->name('register');
 Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 
-Route::get('/', function () {
-    return view('index');
-})->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('{any}', function () {
+        return view('index');
+    })->where('any','.*');
+});
+

@@ -3,7 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        @if (\Illuminate\Support\Facades\Auth::check())
+            <meta name="user_id" content="{{ \Illuminate\Support\Facades\Auth::user()->id }}" />
+        @endif
         <title>Laravel</title>
 
     </head>
