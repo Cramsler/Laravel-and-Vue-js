@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         async fetchChat() {
-            const data = await axios.get(`API/V1/chats/${this.$route.params.id}`);
+            const data = await this.$axios.get(`chats/${this.$route.params.id}`);
             this.chat = data.data.data;
             this.createMessagesArray(this.chat.messages)
             this.created = true;
@@ -82,7 +82,7 @@ export default {
                 chat_id: this.chat.id
             }
 
-           await axios.post(`API/V1/messages`, messageItem);
+           await this.$axios.post(`messages`, messageItem);
 
            this.messages.push(messageItem)
         },

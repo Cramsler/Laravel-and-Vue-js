@@ -23,9 +23,20 @@ const vuetify = new createVuetify({
     directives,
 });
 
-app.component('base-app', Index)
+const axiosInstance = axios.create({
+    baseURL: 'API/V1/',
+    // timeout: 1000,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+    }
+});
 
+app.component('base-app', Index);
+
+app.config.globalProperties.$axios = axiosInstance;
 app.config.globalProperties.$user = document.querySelector("meta[name='user_id']").getAttribute('content');
+
 app.use(router);
 app.use(vuetify);
 app.mount('#app');

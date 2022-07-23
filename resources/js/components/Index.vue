@@ -26,7 +26,7 @@ export default {
             console.log("Successfully connected to the echo websocket server...")
         }
 
-        const data = await axios.get('API/V1/chats');
+        const data = await this.$axios.get('chats');
         this.chats = data.data.data
     }
 }
